@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "es2020",
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "types": ["node"],
+      "lib": ["es2020"],
+      "removeComments": true,
+      "moduleResolution": "node",
+      "noUnusedLocals": false,
+      "noUnusedParameters": false,
+      "sourceMap": true,
+      "strict": true,
+      "noImplicitReturns": true,
+      "typeRoots": ["./node_modules/@types"],
+      "skipLibCheck": true,
+      "declaration": true,
+      "declarationMap": true,
+      "strictFunctionTypes": false,
+      "strictNullChecks": true
+    },
+  "exclude": [ "cdk.out"]
+}
