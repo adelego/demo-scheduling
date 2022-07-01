@@ -6,7 +6,7 @@
 
 img {
   padding: 10px 10px 0;
-  max-width: min(500px, calc(100% - 20px));
+  height: 200px;
 }
 
 .tagline {
@@ -36,15 +36,19 @@ input {
   border: none;
 }
 
-.copychunk {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.input-label {
+  margin-right: 10px;
 }
 
-.emojis {
-  display: inline-block;
-  padding: 15px;
-  background: #d8dee9;
-  border-radius: 10px;
+.label-and-input {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+  padding: 100px;
 }

@@ -1,44 +1,68 @@
 import React, { useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import EmojiPicker from "./EmojiPicker";
-
-import useMorse from "./useMorse";
 
 import logo from "./logo.png";
 import "./App.css";
 
 function App() {
-  const [text, setText] = useState("");
-  const [dot, setDot] = useState("");
-  const [dash, setDash] = useState("");
+  const [message, setMessage] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [time, setTime] = useState("");
   const [error, setError] = useState();
-  let morse = useMorse(text, dot, dash, setError);
 
   return (
     <div className="App">
-      <img src={logo} alt="Morsemoji!" />
-      <p className="tagline">Convert text to morse code... with emojis!</p>
+      <img src={logo} alt="CDK-Scheduler - Programme ton message!" />
+      <p className="tagline">Choisis l'heure et le message, on s'occupe du reste</p>
 
-      <EmojiPicker dot={dot} setDot={setDot} dash={dash} setDash={setDash} />
-      <br />
       <p>{error}</p>
-      <input
-        type="text"
-        placeholder="Text to translate"
-        value={text}
-        onChange={(event) => {
-          setText(event.target.value.toLowerCase());
-          setError(null);
-        }}
-      />
-      {!!morse.length && (
-        <div className="copychunk">
-          <p className="emojis">{morse}</p>
-          <CopyToClipboard text={morse}>
-            <button>Copy to Clipboard</button>
-          </CopyToClipboard>
+      <form>
+        <div class="label-and-input">
+          <label for="message" class="input-label">
+            Ecris nous un petit mot doux
+          </label>
+          <input
+            id="message"
+            type="text"
+            placeholder="Le message à envoyer"
+            value={message}
+            onChange={(event) => {
+              setMessage(event.target.value);
+              setError(null);
+            }}
+          />
         </div>
-      )}
+        <div class="label-and-input">
+          <label for="firstName" class="input-label">
+            Signe-le
+          </label>
+          <input
+            id="firstName"
+            type="text"
+            placeholder="Ton prénom"
+            value={firstName}
+            onChange={(event) => {
+              setFirstName(event.target.value);
+              setError(null);
+            }}
+          />
+        </div>
+        <div class="label-and-input">
+          <label for="time" class="input-label">
+            Remplis une heure entre 14h et 14h30
+          </label>
+          <input
+            id="time"
+            type="text"
+            placeholder="hh:mm:ss"
+            value={time}
+            onChange={(event) => {
+              setTime(event.target.value);
+              setError(null);
+            }}
+          />
+        </div>
+        <button type="submit">Programmer le message</button>
+      </form>
     </div>
   );
 }
