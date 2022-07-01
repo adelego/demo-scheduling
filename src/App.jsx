@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import logo from "./logo.png";
 import "./App.css";
@@ -9,12 +9,41 @@ function App() {
   const [time, setTime] = useState("");
   const [error, setError] = useState();
 
+  useEffect(() => {
+    const splitTime = time.split(":");
+    if (splitTime.length !== 3) {
+      setError("L'heure doit être au format hh:mm:ss");
+      return;
+    }
+    const [hours, minutes, seconds] = splitTime.map((hour) => parseInt(hour));
+    console.log(hours, minutes, seconds);
+    if (isNaN(hours)) {
+      setError("L'heure doit être un nombre");
+      return;
+    }
+    if (isNaN(minutes)) {
+      setError("Les minutes doivent être un nombre");
+      return;
+    }
+    if (isNaN(seconds)) {
+      setError("Les secondes doivent être un nombre");
+      return;
+    }
+    if (seconds < 0 || seconds >= 60) {
+      setError("Les erreurs doivent être entre 0 et 59");
+      return;
+    }
+
+    if (hours != 14 || minutes < 0 || minutes >= 30) {
+      setError("L'heure doit être entre 14:00 et 14:30");
+    }
+  }, [time, error]);
+
   return (
     <div className="App">
       <img src={logo} alt="CDK-Scheduler - Programme ton message!" />
       <p className="tagline">Choisis l'heure et le message, on s'occupe du reste</p>
 
-      <p>{error}</p>
       <form>
         <div class="label-and-input">
           <label for="message" class="input-label">
@@ -60,6 +89,7 @@ function App() {
               setError(null);
             }}
           />
+          <p class="error">{error}</p>
         </div>
         <button type="submit">Programmer le message</button>
       </form>

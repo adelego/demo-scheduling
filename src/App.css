@@ -52,3 +52,7 @@ form {
   align-items: space-around;
   padding: 100px;
 }
+
+.error {
+  color: red
+}
