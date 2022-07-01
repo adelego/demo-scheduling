@@ -1,3 +1,4 @@
+/* Color palette: https://colorhunt.co/palette/f9f2ed3ab0ffffb562f87474 */
 .App {
   width: 100%;
   text-align: center;
@@ -15,8 +16,8 @@ img {
 }
 
 button {
-  background: #a3be8c;
-  color: #ffffff;
+  background: rgba(58, 176, 255, 0.7);
+  color: #F9F2ED;
   border: none;
   border-radius: 5px;
   padding: 10px;
@@ -26,12 +27,12 @@ button {
 
 button:hover,
 button:focus {
-  background: #89ac6b;
+  background: #3AB0FF;
 }
 
 input {
   padding: 5px;
-  background: #e5e9f0;
+  background: #F9F2ED;
   border-radius: 5px;
   border: none;
 }
@@ -54,5 +55,5 @@ form {
 }
 
 .error {
-  color: red
+  color: #F87474
 }
