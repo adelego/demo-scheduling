@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import axios from "axios";
 
 const dateToTimeString = (date: Date) =>
   `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
@@ -11,21 +11,26 @@ export const handler = (event: { Records?: unknown[] }): void => {
       // Parse the event data
       const body = JSON.parse(record.body ?? "") as {
         publicationTimestamp?: string;
-        payload?: string;
+        payload?: { MessageAuthor: { S: string }; MessageContent: { S: string } };
       };
       console.info(
         `The following event should have been dispatched at ${dateToTimeString(
           new Date(parseInt(body.publicationTimestamp ?? `${Date.now()}`))
         )} and it is currently ${dateToTimeString(new Date())}`
       );
-      fetch("https://00mxb0sjm8.execute-api.eu-west-1.amazonaws.com/new-message", {
-        method: "post",
-        body: JSON.stringify({
+      const message = `${body.payload?.MessageAuthor.S ?? "Anonymous"} posted: ${
+        body.payload?.MessageContent.S ?? "empty message"
+      }`;
+      axios.post(
+        "https://00mxb0sjm8.execute-api.eu-west-1.amazonaws.com/new-message",
+        {
           token: process.env.SLACK_SECRET,
-          message: body.payload,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
+          message: message,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       console.info(`Data associated with event : `, body.payload);
     } catch (error) {
       console.error("The event record could not be parsed correctly");

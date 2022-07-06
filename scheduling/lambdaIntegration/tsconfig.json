@@ -19,5 +19,5 @@
       "strictFunctionTypes": false,
       "strictNullChecks": true
     },
-  "exclude": [ "cdk.out"]
+  "exclude": [ "cdk.out", "node_modules"]
 }

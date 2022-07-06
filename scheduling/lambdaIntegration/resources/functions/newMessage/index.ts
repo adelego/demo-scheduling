@@ -1,4 +1,4 @@
-import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
 
 //Create a DynamoDB client
 const dynamo = new DynamoDB({
@@ -11,16 +11,12 @@ const DEFAULT_DELAY = 20 * 60000;
 export const handler = async (event: {
   queryStringParameters: {
     message?: string;
-    minutes?: string;
+    author?: string;
+    dateTimestamp?: string;
   };
 }): Promise<unknown> => {
   //Initialize parameters from the queryStringParameters
-  const message = event.queryStringParameters.message ?? 'No message found';
-
-  const delay =
-    event.queryStringParameters.minutes === undefined
-      ? DEFAULT_DELAY
-      : parseInt(event.queryStringParameters.minutes) * 60000;
+  const message = event.queryStringParameters.message ?? "No message found";
 
   // Put data into the scheduler using the expected format
   // `TableName` being the table name provided by the scheduler object
@@ -31,13 +27,14 @@ export const handler = async (event: {
   // Note that the `MessageContent` key is not mandatory and any key / value pair
   // can be used here
   const response = await dynamo.putItem({
-    TableName: process.env.SCHEDULER_TABLE_NAME ?? 'TABLE_NOT_FOUND',
+    TableName: process.env.SCHEDULER_TABLE_NAME ?? "TABLE_NOT_FOUND",
     Item: {
-      pk: { S: process.env.SCHEDULER_PK ?? 'PK_NOT_FOUND' },
-      sk: { S: `${Date.now() + delay}#${Math.floor(Math.random() * 1000)}` },
+      pk: { S: process.env.SCHEDULER_PK ?? "PK_NOT_FOUND" },
+      sk: { S: event.queryStringParameters.dateTimestamp ?? "SK_NOT_FOUND" },
       payload: {
         M: {
           MessageContent: { S: message },
+          MessageAuthor: { S: event.queryStringParameters.author ?? "Anonymous" },
         },
       },
     },
@@ -45,6 +42,6 @@ export const handler = async (event: {
 
   return {
     statusCode: response.$metadata.httpStatusCode,
-    body: 'Completed',
+    body: "Completed",
   };
 };
