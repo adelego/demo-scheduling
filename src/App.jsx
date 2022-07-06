@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { publishEvent } from "./publishEvent";
 
 import logo from "./logo.png";
 import "./App.css";
@@ -39,12 +40,17 @@ function App() {
     }
   }, [time, error]);
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    publishEvent(message, firstName, time);
+  };
+
   return (
     <div className="App">
       <img src={logo} alt="CDK-Scheduler - Programme ton message!" />
       <p className="tagline">Choisis l'heure et le message, on s'occupe du reste</p>
 
-      <form>
+      <form onSubmit={onSubmit}>
         <div class="label-and-input">
           <label for="message" class="input-label">
             Ecris nous un petit mot doux
