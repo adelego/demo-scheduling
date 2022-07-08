@@ -27,6 +27,10 @@ export class LambdaIntegrationStack extends Stack {
     const api = new apigateway.RestApi(this, "NewMessageApi", {
       restApiName: "New Message API",
       description: "This service appends a new message to your Scheduler.",
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS, // this is also the default
+      },
     });
 
     // Bind the lambda function to the API

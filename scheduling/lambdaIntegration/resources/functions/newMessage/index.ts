@@ -43,5 +43,9 @@ export const handler = async (event: {
   return {
     statusCode: response.$metadata.httpStatusCode,
     body: "Completed",
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
+    },
   };
 };

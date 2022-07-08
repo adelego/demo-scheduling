@@ -106,7 +106,9 @@ function App() {
         </div>
         <button type="submit">Programmer le message</button>
       </form>
-      <p>{feedback}y</p>
+      <div class="feedback-message">
+        <p>{feedback}</p>
+      </div>
     </div>
   );
 }
