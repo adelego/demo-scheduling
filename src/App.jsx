@@ -9,6 +9,7 @@ function App() {
   const [firstName, setFirstName] = useState("");
   const [time, setTime] = useState("");
   const [error, setError] = useState();
+  const [feedback, setFeedback] = useState();
 
   useEffect(() => {
     const splitTime = time.split(":");
@@ -40,9 +41,15 @@ function App() {
     }
   }, [time, error]);
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
-    publishEvent(message, firstName, time);
+    setFeedback("");
+    await publishEvent(message, firstName, time);
+    setFeedback("La demande a bien été envoyée");
+    setError("");
+    setTime("");
+    setMessage("");
+    setFirstName("");
   };
 
   return (
@@ -99,6 +106,7 @@ function App() {
         </div>
         <button type="submit">Programmer le message</button>
       </form>
+      <p>{feedback}y</p>
     </div>
   );
 }
