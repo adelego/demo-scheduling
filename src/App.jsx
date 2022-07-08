@@ -3,51 +3,24 @@ import { publishEvent } from "./publishEvent";
 
 import logo from "./logo.png";
 import "./App.css";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   const [message, setMessage] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [time, setTime] = useState("");
   const [error, setError] = useState();
   const [feedback, setFeedback] = useState();
-
-  useEffect(() => {
-    const splitTime = time.split(":");
-    if (splitTime.length !== 3) {
-      setError("L'heure doit être au format hh:mm:ss");
-      return;
-    }
-    const [hours, minutes, seconds] = splitTime.map((hour) => parseInt(hour));
-    console.log(hours, minutes, seconds);
-    if (isNaN(hours)) {
-      setError("L'heure doit être un nombre");
-      return;
-    }
-    if (isNaN(minutes)) {
-      setError("Les minutes doivent être un nombre");
-      return;
-    }
-    if (isNaN(seconds)) {
-      setError("Les secondes doivent être un nombre");
-      return;
-    }
-    if (seconds < 0 || seconds >= 60) {
-      setError("Les erreurs doivent être entre 0 et 59");
-      return;
-    }
-
-    if (hours != 14 || minutes < 0 || minutes >= 30) {
-      setError("L'heure doit être entre 14:00 et 14:30");
-    }
-  }, [time, error]);
+  const [startDate, setStartDate] = useState(new Date());
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setFeedback("");
-    await publishEvent(message, firstName, time);
+    await publishEvent(message, firstName, startDate);
     setFeedback("La demande a bien été envoyée");
     setError("");
-    setTime("");
+    setStartDate(new Date());
     setMessage("");
     setFirstName("");
   };
@@ -90,23 +63,22 @@ function App() {
         </div>
         <div class="label-and-input">
           <label for="time" class="input-label">
-            Remplis une heure entre 14h et 14h30
+            Choisis une heure
           </label>
-          <input
-            id="time"
-            type="text"
-            placeholder="hh:mm:ss"
-            value={time}
-            onChange={(event) => {
-              setTime(event.target.value);
-              setError(null);
-            }}
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm aa"
           />
-          <p class="error">{error}</p>
         </div>
         <button type="submit">Programmer le message</button>
       </form>
       <div class="feedback-message">
+        <p class="error">{error}</p>
         <p>{feedback}</p>
       </div>
     </div>
